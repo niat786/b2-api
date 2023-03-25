@@ -3,6 +3,7 @@ from botocore.config import Config
 import requests
 import boto3
 import os
+import re
 
 
 app = FastAPI()
@@ -38,7 +39,7 @@ def upload(file: UploadFile = File(...), bucket_name: str = "apkeve"):
 
 
 @app.get('/download-upload')
-def download_upload(url, chunk_size=1024):
+def download_upload(url,file_name, chunk_size=1024):
 
     # Create a Boto3 S3 client
     s3 = boto3.client(
@@ -54,13 +55,7 @@ def download_upload(url, chunk_size=1024):
 
     # Send a HEAD request to determine the size and name of the file
     response = session.head(url)
-    file_name = response.headers.get('x-bz-file-name')
-    file_size = int(response.headers.get("Content-Length", 0))
-
-    # If filename is missing in headers, extract name of file from URL
-    if(not file_name):
-        file_name = os.path.basename(url)
-
+    file_size = int(response.headers.get("Content-Length", 0)) 
     try:
         # Send a GET request to download the file
         response = session.get(url, stream=True)

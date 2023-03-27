@@ -6,6 +6,7 @@ import os
 import re
 
 
+
 app = FastAPI()
 
 APP_KEY = 'K004MAA5hrBO1psiqj7OozsGCsiBeIQ'
@@ -13,7 +14,6 @@ KEY_ID = '004b9b536b4e9e40000000007'
 BUCKET_ID = '7b090b7503167b948e290e14'
 BUCKET_NAME = 'apkeve'
 ENDPOINT = 'https://s3.us-west-004.backblazeb2.com'
-
 
 @app.get("/")
 def index():
@@ -69,7 +69,7 @@ def download_upload(url,file_name, chunk_size=1024):
         return {'status':404}
     else:
         # Set the chunk size based on the file size
-        chunk_size = 0;
+        chunk_size = 0
         if file_size > 0:
             chunk_size = max(chunk_size, file_size // (1024 * 10))
 
@@ -85,4 +85,4 @@ def download_upload(url,file_name, chunk_size=1024):
         # Delete the local file
         os.remove(file_name)
 
-        return {'status': 200}
+        return {'status': 200, 'file_size': file_size, 'file_name': file_name}

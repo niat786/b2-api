@@ -70,13 +70,13 @@ def download_upload(url,file_name, chunk_size=1024):
         return {'status':404}
     else:
 
-        s3 = boto3.client('s3', endpoint_url=ENDPOINT)
+        # s3 = boto3.client('s3', endpoint_url=ENDPOINT)
          # Set the chunk size (e.g., 5 MB)
         chunk_size = 5 * 1024 * 1024
 
         # Define the bucket and key
         bucket_name = BUCKET_NAME
-        key_name = 'file-streaming'
+        key_name = file_name
 
         # Stream and upload the file in chunks
         with requests.get(url, stream=True) as response:
@@ -110,7 +110,7 @@ def download_upload(url,file_name, chunk_size=1024):
                 MultipartUpload={'Parts': parts}
             )
 
-        return {"message": "File uploaded successfully"}
+        return {'status': 200, 'file_size': file_size, 'file_name': file_name}
 
 
         # # Set the chunk size based on the file size

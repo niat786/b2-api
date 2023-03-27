@@ -84,5 +84,4 @@ def download_upload(url,file_name, chunk_size=1024):
 
         # Delete the local file
         os.remove(file_name)
-
         return {'status': 200, 'file_size': file_size, 'file_name': file_name}
